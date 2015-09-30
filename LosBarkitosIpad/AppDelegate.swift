@@ -17,7 +17,7 @@ var drawerPortName : NSString = ""
 var DBLocal : String = ""
 var DBPath : String = ""
 
-let IPAD : String = "MARINAFERRY"
+let IPAD : String = "LOSBARKITOS"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

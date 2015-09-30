@@ -329,6 +329,7 @@ class webServiceCallAPI : NSObject {
         var jsonArray : NSArray!
         var error : NSError?
         var parametro : String =  String()
+        var responseObject = [String : AnyObject]()
         
         switch tipo {
         case 1:

@@ -306,7 +306,9 @@ func PrintSampleReceipt3Inch(portName : NSString, portSettings : NSString, PV : 
 // TICKET RESUMEN DEL DIA
 func PrintTotal3Inch(p_portName : NSString, p_portSettings : NSString, diccParam : [String : AnyObject]) -> Bool {
     
-    let horaActual : NSDate = NSDate()
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "HH:mm"
+    let horaActual = dateFormatter.stringFromDate(NSDate())
     
     let commands = NSMutableData()
     var str : String
@@ -335,8 +337,8 @@ func PrintTotal3Inch(p_portName : NSString, p_portSettings : NSString, diccParam
     commands.appendBytes(cmd, length: 3)
     
     // Inversion = si
-    cmd = [ 0x1b, 0x34 ]
-    commands.appendBytes(cmd, length: 2)
+    //cmd = [ 0x1b, 0x34 ]
+    //commands.appendBytes(cmd, length: 2)
     
     let pv: AnyObject = diccParam["p_venta"]!
     str = "\(pv)\r\n"
@@ -345,6 +347,8 @@ func PrintTotal3Inch(p_portName : NSString, p_portSettings : NSString, diccParam
    
     str = diccParam["dia"] as! String
     str += "\r\n"
+    str += horaActual
+    str += "\r\n--------------------\r\n"
     datos = str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: true)
     commands.appendData(datos!)
     
