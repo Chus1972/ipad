@@ -35,8 +35,8 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
     var PUNTO_VENTA : Int = 0
     var PUNTO_VENTA_NOMBRE : String = ""
 
-    var internetReachability : Reachability?
-    var estado : Reachability.NetworkStatus?
+   // var internetReachability : Reachability?
+   // var estado : Reachability.NetworkStatus?
 
 
     @IBOutlet weak var cancelarUIButton: UIButton!
@@ -67,7 +67,7 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
     
     @IBAction func bntAceptarPushButton(sender: UIButton) {
         
-        webService.obtenerNumero(self.precioUILabel.text!.toInt()!)
+        webService.obtenerNumero(Int(self.precioUILabel.text!)!)
     }
  
     override func viewDidLoad() {
@@ -90,9 +90,9 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.internetReachability = Reachability.reachabilityForInternetConnection()
-        self.internetReachability?.startNotifier()
-        self.verificarEstado(self.internetReachability!)
+    //    self.internetReachability = Reachability.reachabilityForInternetConnection()
+      //  self.internetReachability?.startNotifier()
+       // self.verificarEstado(self.internetReachability!)
 
     }
 
@@ -102,7 +102,7 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
     }
     
     func didReveiveResponse_numeroTicket(respuesta: [String : AnyObject]) {
-        println("\respuesta")
+        print("\respuesta")
         for (k,v) in respuesta {
             if k as NSString == "error" && v as! NSString == "si" {
                 EXIT_FAILURE
@@ -124,7 +124,7 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
     func didReceiveResponse_entradaBDD_ventaBarca(respuesta: [String : AnyObject]) {
         for (k,v) in respuesta {
             if k as NSString == "error" && v as! NSString == "si" {
-                println("ERROR EN EL DICCIONARIO DEVUELTO")
+                print("ERROR EN EL DICCIONARIO DEVUELTO")
                 EXIT_FAILURE
             }
         }
@@ -142,15 +142,15 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
             
             // Introducir el ticket vendido en la BDD correspondiente
             // obtengo el vendedor que ha hecho la venta
-            let codVend : Int = (DataManager().getValueForKey("vendedor", inFile: "appstate") as! String).toInt()!
+            let codVend : Int = Int((DataManager().getValueForKey("vendedor", inFile: "appstate") as! String))!
             
-            let wifi = Reachability.reachabilityForInternetConnection()
-            wifi.startNotifier()
+       //     let wifi = Reachability.reachabilityForInternetConnection()
+         //   wifi.startNotifier()
             
             // Se inserta la venta de la barca en HEROKU
             webService.entradaBDD_ventaBarca(self.numeroTicket,
                 tipo: self.toTipo!,
-                precio: self.precioUILabel.text!.toInt()!,
+                precio: Int(self.precioUILabel.text!)!,
                 puntoVenta: PUNTO_VENTA ,
                 vendedor: codVend,
                 negro: self.negro)
@@ -159,7 +159,7 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
             total += 1
             DataManager().setValueForKey("total_barcas", value: total, inFile: "appstate")
             // Se inserta la venta de la barca en SQLITE
-            let insertado = insertaViajeSQLite()
+            _ = insertaViajeSQLite()
             //if insertado {
               //  self.numeroBarcasUILabel.text = String(numeroBarcasSQLite())
             //}
@@ -167,7 +167,7 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
         } else {
             
             self.dismissViewControllerAnimated(true, completion: {
-                var alertaNOInsercionBDD = UIAlertController(title: "SIN IMPRESORA-NO HAY TICKET", message: "No hay una impresora conectada. Intenta establecer nuevamente la conexión (Ajustes -> Bluetooth->Seleccionar Impresora TSP) - No se ha insertado en la BDD", preferredStyle: UIAlertControllerStyle.Alert)
+                let alertaNOInsercionBDD = UIAlertController(title: "SIN IMPRESORA-NO HAY TICKET", message: "No hay una impresora conectada. Intenta establecer nuevamente la conexión (Ajustes -> Bluetooth->Seleccionar Impresora TSP) - No se ha insertado en la BDD", preferredStyle: UIAlertControllerStyle.Alert)
                 
                 let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
                 
@@ -186,18 +186,18 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
             foundPrinters = SMPort.searchPrinter("BT:")
             
             
-            var portInfo : PortInfo = foundPrinters.objectAtIndex(0) as! PortInfo
+            let portInfo : PortInfo = foundPrinters.objectAtIndex(0) as! PortInfo
             lastSelectedPortName = portInfo.portName
             
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.setPortName(portInfo.portName)
             appDelegate.setPortSettings(arrayPort.objectAtIndex(0) as! NSString)
-            var p_portName : NSString = appDelegate.getPortName()
-            var p_portSettings : NSString = appDelegate.getPortSettings()
+            let p_portName : NSString = appDelegate.getPortName()
+            let p_portSettings : NSString = appDelegate.getPortSettings()
             
             let vend : String = DataManager().getValueForKey("nombre_vendedor", inFile: "appstate") as! String
             let punto : String = DataManager().getValueForKey("punto_venta", inFile: "appstate") as! String
-            let precio : Int = self.precioUILabel.text!.toInt()!
+            let precio : Int = Int(self.precioUILabel.text!)!
             let numero : Int = self.numeroTicket
             let barca : String = self.barcaActualString!
             let diccParam : [String : AnyObject] = [
@@ -208,7 +208,7 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
                 "vendedor"    : vend
             ]
             
-            let ticketImpreso : Bool = PrintSampleReceipt3Inch(p_portName, p_portSettings, diccParam)
+            let ticketImpreso : Bool = PrintSampleReceipt3Inch(p_portName, portSettings: p_portSettings, parametro: diccParam)
             
             // Trataré de desconectar el puerto
             
@@ -236,7 +236,7 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
     func ponerPrecios() {
         
         
-        println("listaPrecio : \(listaPrecio)")
+        print("listaPrecio : \(listaPrecio)")
 
         var boton : UIButton
         for boton in self.preciosUIButton {
@@ -267,20 +267,20 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
         //let fecha = formatoFecha.stringFromDate(NSDate())
         //let result = db.execute("INSERT i", parameters: <#[AnyObject]?#>)
         
-        var viaje : Viaje = Viaje()
+        let viaje : Viaje = Viaje()
         let formatoFecha = NSDateFormatter()
         formatoFecha.dateFormat = "dd-MM-yyyy hh:mm:ss"
         let fecha = formatoFecha.stringFromDate(NSDate())
         
         viaje.numero = self.numeroTicket
         viaje.fecha = fecha
-        viaje.precio = self.precioUILabel.text!.toInt()!
+        viaje.precio = Int(self.precioUILabel.text!)!
         viaje.barca = self.barcaActual
         viaje.blanco = self.negro
-        viaje.vendedor =  (DataManager().getValueForKey("vendedor", inFile: "appstate") as! String).toInt()!
+        viaje.vendedor =  Int((DataManager().getValueForKey("vendedor", inFile: "appstate") as! String))!
         viaje.punto_venta = (DataManager().getValueForKey("punto_venta_codigo", inFile: "appstate") as! Int)
         
-        var estaInsertadoSQLITE = ManejoSQLITE.instance.insertaViajeSQLITE(viaje)
+        let estaInsertadoSQLITE = ManejoSQLITE.instance.insertaViajeSQLITE(viaje)
         return estaInsertadoSQLITE
         
         
@@ -292,32 +292,33 @@ class PreciosViewController: UIViewController, WebServiceProtocoloPrecio {
     }
     
     
-    func verificarEstado(reachability : Reachability) {
+   // func verificarEstado(reachability : Reachability) {
         
-        var connectionRequired : Bool = false
-        self.estado = reachability.currentReachabilityStatus
+     //   var connectionRequired : Bool = false
+       // self.estado = reachability.currentReachabilityStatus
         
-        if reachability.isReachable() {
-            println("conectado")
-        } else {
-           
-            var alertaNOInsercionBDD = UIAlertController(title: "SIN CONEXIÓN", message: " Intenta entrar en los ajustes del sistema y ver si está disponible la red WIFI", preferredStyle: UIAlertControllerStyle.Alert)
+        //if reachability.isReachable() {
+          //  print("conectado")
+    
+ //} else {
+   
+   //         let alertaNOInsercionBDD = UIAlertController(title: "SIN CONEXIÓN", message: " Intenta entrar en los ajustes del sistema y ver si está disponible la red WIFI", preferredStyle: UIAlertControllerStyle.Alert)
             
-            let OkActionHandler = {(accion : UIAlertAction!) -> Void in
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
+     //       let OkActionHandler = {(accion : UIAlertAction!) -> Void in
+               // self.dismissViewControllerAnimated(true, completion: nil)
+       //     }
                 
-            let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: OkActionHandler)
+         //   let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: OkActionHandler)
                 
-            alertaNOInsercionBDD.addAction(OkAction)
+           // alertaNOInsercionBDD.addAction(OkAction)
                 
-            self.presentViewController(alertaNOInsercionBDD, animated: true, completion: nil)
+            //self.presentViewController(alertaNOInsercionBDD, animated: true, completion: nil)
                 
            
             
          
-        }
-    }
+        //}
+   // }
 
 
     /*

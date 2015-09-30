@@ -14,21 +14,21 @@ class Conectividad : NSObject {
     var delegate : ConectividadProtocol?
     var hay : Bool = false
     func estaConectado () -> Bool {
-    println("ENTRA")
-        let reachability : Reachability = Reachability.reachabilityForInternetConnection()
+    print("ENTRA")
+     //   let reachability : Reachability = Reachability.reachabilityForInternetConnection()
         
-        reachability.whenReachable = { reachability in
+       // reachability.whenReachable = { reachability in
            
-            if reachability.isReachableViaWiFi() {
-                println("Reachable via WIFI")
-                self.hay = true
-            } else {
-                println("Reachable via Cellular")
-            }
+         //   if reachability.isReachableViaWiFi() {
+           //     print("Reachable via WIFI")
+             //   self.hay = true
+            //} else {
+            //    print("Reachable via Cellular")
+           // }
             
-        }
-        reachability.startNotifier()
-        println (reachability.startNotifier())
+       // }
+        //reachability.startNotifier()
+       // print (reachability.startNotifier())
         
         return true
     }

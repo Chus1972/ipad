@@ -33,8 +33,8 @@ func setupImpresora() -> Bool {
     
     if foundPrinters.count > 0 {// Hay impresora conectada
         
-        println(foundPrinters.count)
-        var portInfo : PortInfo = foundPrinters.objectAtIndex(0) as! PortInfo
+        print(foundPrinters.count)
+        let portInfo : PortInfo = foundPrinters.objectAtIndex(0) as! PortInfo
         
         lastSelectedPortName = portInfo.portName
         
@@ -45,7 +45,7 @@ func setupImpresora() -> Bool {
         var p_portSettings : NSString = appDelegate.getPortSettings()
         //infoImpresoraUILabel.text = portInfo.portName
         
-        println("Impresoras: \(foundPrinters.objectAtIndex(0))" )
+        print("Impresoras: \(foundPrinters.objectAtIndex(0))" )
         return true
     }
     else { // No hay ninguna impresora conectada
@@ -58,12 +58,12 @@ func setupImpresora() -> Bool {
 // IMPRESION DE TICKET
 func PrintSampleReceipt3Inch(portName : NSString, portSettings : NSString, parametro : [String : AnyObject]) -> Bool {
     
-    var formatoFecha = NSDateFormatter()
+    let formatoFecha = NSDateFormatter()
     formatoFecha.dateFormat = "dd-MM-yyyy"
     let fecha : NSDate = NSDate()
     let fechaConFormato = formatoFecha.stringFromDate(fecha)
     
-    var commands = NSMutableData()
+    let commands = NSMutableData()
     var str : String
     var datos : NSData?
     
@@ -134,7 +134,7 @@ func PrintSampleReceipt3Inch(portName : NSString, portSettings : NSString, param
     cmd = [0x1b, 0x57, 0x02]
     commands.appendBytes(cmd, length: 3)
     let b : String = parametro["barca"] as! String
-    println("barca \(b)")
+    print("barca \(b)")
     str = b + "\r\n\r\n"
     datos = str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: true)
     commands.appendData(datos!)
@@ -198,7 +198,7 @@ func PrintSampleReceipt3Inch(portName : NSString, portSettings : NSString, param
     commands.appendData(datos!)
 
     
-    return (sendCommand(commands,portName, portSettings,10000))
+    return (sendCommand(commands,portName: portName, portSettings: portSettings,timeoutMillis: 10000))
 }
 
 // IMPRESION DE RESERVA
@@ -206,7 +206,7 @@ func PrintSampleReceipt3Inch(portName : NSString, portSettings : NSString, PV : 
     
     let horaActual : NSDate = NSDate()
     
-    var commands = NSMutableData()
+    let commands = NSMutableData()
     var str : String
     var datos : NSData?
     
@@ -299,7 +299,7 @@ func PrintSampleReceipt3Inch(portName : NSString, portSettings : NSString, PV : 
     cmd = [ 0x1b, 0x64, 0x02 ] // Corta el papel
     commands.appendBytes(cmd, length: 3)
 
-    return (sendCommand(commands,portName, portSettings,10000))
+    return (sendCommand(commands,portName: portName, portSettings: portSettings,timeoutMillis: 10000))
 }
 
 
@@ -308,7 +308,7 @@ func PrintTotal3Inch(p_portName : NSString, p_portSettings : NSString, diccParam
     
     let horaActual : NSDate = NSDate()
     
-    var commands = NSMutableData()
+    let commands = NSMutableData()
     var str : String
     var datos : NSData?
     
@@ -427,7 +427,7 @@ func PrintTotal3Inch(p_portName : NSString, p_portSettings : NSString, diccParam
     commands.appendBytes(cmd, length: 3)
 
     
-    return (sendCommand(commands, portName, p_portSettings, 10000))
+    return (sendCommand(commands, portName: portName, portSettings: p_portSettings, timeoutMillis: 10000))
 }
 
 func sendCommand(commandsToPrint : NSData, portName : NSString, portSettings: NSString, timeoutMillis : u_int) -> Bool{
@@ -452,7 +452,7 @@ func sendCommand(commandsToPrint : NSData, portName : NSString, portSettings: NS
         starPort.beginCheckedBlock(&status, 2)
         
         if status?.offline == 1 {
-            println("Error: La impresora no esta en linea")
+            print("Error: La impresora no esta en linea")
             return false
         }
         
@@ -478,7 +478,7 @@ func sendCommand(commandsToPrint : NSData, portName : NSString, portSettings: NS
         }
     
         if (UInt32(totalAmountWritten) < UInt32(commandSize)) {
-            println("Error: Impresion fuera de tiempo")
+            print("Error: Impresion fuera de tiempo")
             return false
         }
         
@@ -493,7 +493,7 @@ func sendCommand(commandsToPrint : NSData, portName : NSString, portSettings: NS
         //free((UnsafeMutablePointer<Void>),dataToSentToPrinter)
         SMPort.releasePort(starPort)
     } else {
-        println("Error: Writte port timed out")
+        print("Error: Writte port timed out")
         return false
     }
     //free(dataToSentToPrinter)

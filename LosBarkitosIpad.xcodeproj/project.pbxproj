@@ -25,7 +25,6 @@
 		BB34ACF51A1615EE008E67ED /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB34ACF31A1615EE008E67ED /* LaunchScreen.xib */; };
 		BB35F5431A1F7426004AFC7C /* Conexion.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35F5421A1F7426004AFC7C /* Conexion.swift */; };
 		BB35F5451A1F754A004AFC7C /* Conectividad.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB35F5441A1F754A004AFC7C /* Conectividad.swift */; };
-		BB39033C1A77D5C0004572B2 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB39033B1A77D5C0004572B2 /* ExternalAccessory.framework */; };
 		BB3903401A77DF6C004572B2 /* StarIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB39033F1A77DF6C004572B2 /* StarIO.framework */; };
 		BB6FB2E51B417F3200EDD903 /* SQLiteDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6FB2E31B417F3200EDD903 /* SQLiteDB.swift */; };
 		BB6FB2E61B417F3200EDD903 /* String-Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6FB2E41B417F3200EDD903 /* String-Extras.swift */; };
@@ -36,7 +35,6 @@
 		BBC33D7C1AD3E6C0009C1392 /* tipoReservaUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC33D7B1AD3E6C0009C1392 /* tipoReservaUIViewController.swift */; };
 		BBD95A7A1A78EC1B00496991 /* PrinterFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD95A791A78EC1B00496991 /* PrinterFunctions.swift */; };
 		BBF88ECF1AACA68D009BC3AB /* ControlUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF88ECE1AACA68D009BC3AB /* ControlUITableViewCell.swift */; };
-		BBFC89D81A7E3996008402AF /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFC89D71A7E3996008402AF /* Reachability.swift */; };
 		F887BA8EA52719FBA3DEACF1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 216AC3D9FFBD34278773084E /* libPods.a */; };
 		F9AFCE131A169FB5007FF3A9 /* PlistData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AFCE121A169FB5007FF3A9 /* PlistData.swift */; };
 		F9BCDB441A2D0D83002C70D4 /* VendedorUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BCDB431A2D0D83002C70D4 /* VendedorUITableViewCell.swift */; };
@@ -83,7 +81,6 @@
 		BBC33D7B1AD3E6C0009C1392 /* tipoReservaUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tipoReservaUIViewController.swift; sourceTree = "<group>"; };
 		BBD95A791A78EC1B00496991 /* PrinterFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrinterFunctions.swift; sourceTree = "<group>"; };
 		BBF88ECE1AACA68D009BC3AB /* ControlUITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlUITableViewCell.swift; sourceTree = "<group>"; };
-		BBFC89D71A7E3996008402AF /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		F9AFCE121A169FB5007FF3A9 /* PlistData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistData.swift; sourceTree = "<group>"; };
 		F9BCDB431A2D0D83002C70D4 /* VendedorUITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VendedorUITableViewCell.swift; sourceTree = "<group>"; };
 		F9CBBC3D1A374CB3006E45CA /* PreciosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreciosViewController.swift; sourceTree = "<group>"; };
@@ -96,7 +93,6 @@
 			files = (
 				BB6FB2EA1B429F3D00EDD903 /* libsqlite3.dylib in Frameworks */,
 				BB6FB2E81B41807100EDD903 /* libsqlite3.0.dylib in Frameworks */,
-				BB39033C1A77D5C0004572B2 /* ExternalAccessory.framework in Frameworks */,
 				BB1FB6711A232FA50078B97A /* UIKit.framework in Frameworks */,
 				BB3903401A77DF6C004572B2 /* StarIO.framework in Frameworks */,
 				F887BA8EA52719FBA3DEACF1 /* libPods.a in Frameworks */,
@@ -145,7 +141,6 @@
 				BB34ACE41A1615EE008E67ED /* Products */,
 				BB1FB6721A232FFF0078B97A /* Frameworks */,
 				D1018F923A5D82FBBA599D8C /* Pods */,
-				BBFC89D71A7E3996008402AF /* Reachability.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -270,6 +265,8 @@
 		BB34ACDB1A1615EE008E67ED /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Jesus Valladolid Rebollar";
 				TargetAttributes = {
@@ -353,7 +350,6 @@
 				BB020C481AA0883F00B5E976 /* UtilidadesBDDSQLITE.swift in Sources */,
 				BB020C451AA0856000B5E976 /* viaje.swift in Sources */,
 				BB020C4E1AA08A9800B5E976 /* tipoBarca.swift in Sources */,
-				BBFC89D81A7E3996008402AF /* Reachability.swift in Sources */,
 				BBC33D7C1AD3E6C0009C1392 /* tipoReservaUIViewController.swift in Sources */,
 				F9BCDB441A2D0D83002C70D4 /* VendedorUITableViewCell.swift in Sources */,
 				BB020C4C1AA08A5C00B5E976 /* puntoVenta.swift in Sources */,

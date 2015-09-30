@@ -42,7 +42,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
     @IBOutlet weak var numeroReservasGoldUILabel: UILabel!
     @IBOutlet weak var tiempoEsperaUILabel: UILabel!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         //self.libre = nil
         //webService.obtenerPrimerLibre()
@@ -70,7 +70,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
                 webService.siguienteBarcaLlegar()
             }
         default:
-            println("Esta opcion no se puede dar")
+            print("Esta opcion no se puede dar")
         }
         
     }
@@ -121,7 +121,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
         
         //println("lista llegadas : \(respuesta)")
         
-        for (k,v) in respuesta {
+        for (_,v) in respuesta {
             //println("k = \(k)")
             //println("v = \(v)")
 
@@ -146,7 +146,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
         var registro : [String : AnyObject] = [:]
         //println("Lista reservas : \(respuesta)")
         
-        for (k,v) in respuesta {
+        for (_,v) in respuesta {
             registro["numero"] = v["numero"] as! Int
             registro["nombre"] = v["base"] as! String
             registro["hora_prevista"] = v["hora_prevista"] as! String
@@ -157,7 +157,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
         }
         // ordenacion de las reservas por el numero
     
-        self.lista.sort({(primero : [String:AnyObject], segundo : [String:AnyObject]) -> Bool in
+        self.lista.sortInPlace({(primero : [String:AnyObject], segundo : [String:AnyObject]) -> Bool in
                 return   segundo["numero"] as! Int > primero["numero"] as! Int
             })
         //println(" ORDENADO : \(self.lista)")
@@ -170,7 +170,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
         
         
         if respuesta["error"] == "no es posible" {
-            var alerta = UIAlertController(title: "EEEEPPPPPP", message: "No puede salir una barca si no hay disponibles", preferredStyle: UIAlertControllerStyle.Alert)
+            let alerta = UIAlertController(title: "EEEEPPPPPP", message: "No puede salir una barca si no hay disponibles", preferredStyle: UIAlertControllerStyle.Alert)
             
             let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
             
@@ -180,7 +180,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
  
         } else {
             let nombre = respuesta["nombre"]!
-            var alerta = UIAlertController(title: "SALIDA", message: "Salida de una \(nombre)", preferredStyle: UIAlertControllerStyle.Alert)
+            let alerta = UIAlertController(title: "SALIDA", message: "Salida de una \(nombre)", preferredStyle: UIAlertControllerStyle.Alert)
             
             let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
             
@@ -196,7 +196,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
     func didReceiveResponse_llegada(respuesta: [String : String]) {
         //println(respuesta)
         if respuesta["error"] == "1" {
-            var alerta = UIAlertController(title: "EEEEPPPPPP", message: "Error en la contabilización de la llegada de la barca", preferredStyle: UIAlertControllerStyle.Alert)
+            let alerta = UIAlertController(title: "EEEEPPPPPP", message: "Error en la contabilización de la llegada de la barca", preferredStyle: UIAlertControllerStyle.Alert)
             
             let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
             
@@ -206,7 +206,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
             
         } else {
             let nombre = respuesta["nombre"]!
-            var alerta = UIAlertController(title: "LLEGADA", message: "Llegada de una \(nombre)", preferredStyle: UIAlertControllerStyle.Alert)
+            let alerta = UIAlertController(title: "LLEGADA", message: "Llegada de una \(nombre)", preferredStyle: UIAlertControllerStyle.Alert)
             
             let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
             
@@ -249,23 +249,23 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
             // Actualizamos los contadores de las reservas que faltan
             switch tipo{
             case 1:
-                let num : Int? = self.numeroReservasRioUILabel.text?.toInt()
+                let num : Int? = Int(self.numeroReservasRioUILabel.text!)
                 self.numeroReservasRioUILabel.text = String(num! - 1)
-                self.tiempoEsperaUILabel.text =  String(self.numeroReservasRioUILabel.text!.toInt()! * 5)
+                self.tiempoEsperaUILabel.text =  String(Int(self.numeroReservasRioUILabel.text!)! * 5)
             case 2:
-                let num : Int? = self.numeroReservasElectricaUILabel.text?.toInt()
+                let num : Int? = Int(self.numeroReservasElectricaUILabel.text!)
                 self.numeroReservasElectricaUILabel.text = String(num! - 1)
             case 3:
-                let num : Int? = self.numeroReservasWhalyUILabel.text?.toInt()
+                let num : Int? = Int(self.numeroReservasWhalyUILabel.text!)
                 self.numeroReservasWhalyUILabel.text = String(num! - 1)
             default:
-                let num : Int? = self.numeroReservasGoldUILabel.text?.toInt()
+                let num : Int? = Int(self.numeroReservasGoldUILabel.text!)
                 self.numeroReservasGoldUILabel.text = String(num! - 1)
             }
             
             
         } else if mensaje == "KO" {
-            var alerta = UIAlertController(title: "PROBLEMMMM", message: "No puede salir ls reserva de la lista", preferredStyle: UIAlertControllerStyle.Alert)
+            let alerta = UIAlertController(title: "PROBLEMMMM", message: "No puede salir ls reserva de la lista", preferredStyle: UIAlertControllerStyle.Alert)
             
             let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
             
@@ -282,7 +282,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
         if respuesta["mensaje"] as! String == "OK" {
             contenido = respuesta["contenido"] as! Dictionary<String,String>
             self.numeroReservasRioUILabel.text = contenido["rio"]
-            self.tiempoEsperaUILabel.text = String(self.numeroReservasRioUILabel.text!.toInt()! * 5)
+            self.tiempoEsperaUILabel.text = String(Int(self.numeroReservasRioUILabel.text!)! * 5)
             self.numeroReservasElectricaUILabel.text = contenido["electrica"]
             self.numeroReservasWhalyUILabel.text = contenido["whaly"]
             self.numeroReservasGoldUILabel.text = contenido["gold"]
@@ -322,7 +322,7 @@ class ControlViewController: UIViewController, WebServiceProtocoloControl, UITab
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
-        var cell : ControlUITableViewCell = self.listaUITableView.dequeueReusableCellWithIdentifier("Cell") as! ControlUITableViewCell
+        let cell : ControlUITableViewCell = self.listaUITableView.dequeueReusableCellWithIdentifier("Cell") as! ControlUITableViewCell
         
         if self.lista[indexPath.row]["fuera"] as! Int == 0 {
             let numero : Int = self.lista[indexPath.row]["numero"] as! Int

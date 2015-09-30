@@ -123,9 +123,9 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     //let conectado : Conectividad?
     // Variables para conectividad
  //   var hostReachability : Reachability?
-    var internetReachability : Reachability?
+  //  var internetReachability : Reachability?
   //  var wifiReachability : Reachability?
-    var estado : Reachability.NetworkStatus?
+   // var estado : Reachability.NetworkStatus?
 
     
     // LLamo a obtenerVendedores cuando se pulsa el boton del uitableview
@@ -223,7 +223,7 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         let totalImpreso : Bool = imprimirTotal()
         
         if !totalImpreso {
-            var alertaNoImpresora = UIAlertController(title: "SIN IMPRESORA", message: "No hay una impresora conectada. Intenta establecer nuevamente la conexión (Ajustes -> Bluetooth->Seleccionar Impresora TSP)", preferredStyle: UIAlertControllerStyle.Alert)
+            let alertaNoImpresora = UIAlertController(title: "SIN IMPRESORA", message: "No hay una impresora conectada. Intenta establecer nuevamente la conexión (Ajustes -> Bluetooth->Seleccionar Impresora TSP)", preferredStyle: UIAlertControllerStyle.Alert)
             
             let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
             
@@ -266,7 +266,7 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         self.infoAdministradoUILabel.text = "Usuario"
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
     
         super.init(coder: aDecoder)
         webService.delegate = self
@@ -293,9 +293,9 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         
         // miro la conectividad del ipad
         if conec.estaConectado() == true {
-            println("Esta conectado")
+            print("Esta conectado")
         } else {
-            println("No está conectado")
+            print("No está conectado")
         }
         
         self.passwordUIView.hidden = true
@@ -307,7 +307,7 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: {action in accessoryDisconnected}, name: EAAccessoryDidConnectNotification, object: nil)
         
         // Compruebo si ya se ha abierto el dia
-        println(DataManager().getValueForKey("vendedor", inFile: "appstate") as! String)
+        print(DataManager().getValueForKey("vendedor", inFile: "appstate") as! String)
     
         //cargarValoresCon_appstate(inFile: "appstate")
         
@@ -315,7 +315,7 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
         self.vendedorUITableView.hidden = true
         
         // Si es posible pongo el nombre del vendedor
-        self.vendedorUITextField.text = DataManager().getValueForKey("nombre_vendedor", inFile: "appstate") as! String
+        self.vendedorUITextField.text = DataManager().getValueForKey("nombre_vendedor", inFile: "appstate") as? String
         if self.PUNTO_VENTA == 0 {
             self.PUNTO_VENTA = DataManager().getValueForKey("punto_venta_codigo", inFile: "appstate") as! Int
         }
@@ -336,7 +336,7 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     override func viewWillAppear(animated: Bool) {
         
         // Miro si hay impresora conectada
-        let impr : Bool =  setupImpresora()
+        _ =  setupImpresora()
        
         self.infoAdministradoUILabel.text = "Usuario"
         
@@ -353,23 +353,23 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
             self.PUNTO_VENTA = 2
         }
         
-        self.internetReachability = Reachability.reachabilityForInternetConnection()
-        self.internetReachability?.startNotifier()
-        self.verificarEstado(self.internetReachability!)
+       // self.internetReachability = Reachability.reachabilityForInternetConnection()
+       // self.internetReachability?.startNotifier()
+       // self.verificarEstado(self.internetReachability!)
 
     }
     
-    func verificarEstado(reachability : Reachability?) {
+   // func verificarEstado(reachability : Reachability?) {
        
-        var connectionRequired : Bool = false
-        self.estado = reachability!.currentReachabilityStatus
+     //   var connectionRequired : Bool = false
+       // self.estado = reachability!.currentReachabilityStatus
         
-        if reachability!.isReachable() {
-            println("conectado")
-        } else {
+       // if reachability!.isReachable() {
+        //    print("conectado")
+        //} else {
             
-        }
-    }
+       // }
+   // }
     
     func imprimirTotal() -> Bool {
         
@@ -378,14 +378,14 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
             self.foundPrinters = SMPort.searchPrinter("BT:")
             
             
-            var portInfo : PortInfo = self.foundPrinters.objectAtIndex(0) as! PortInfo
+            let portInfo : PortInfo = self.foundPrinters.objectAtIndex(0) as! PortInfo
             self.lastSelectedPortName = portInfo.portName
             
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.setPortName(portInfo.portName)
             appDelegate.setPortSettings(arrayPort.objectAtIndex(0) as! NSString)
-            var p_portName : NSString = appDelegate.getPortName()
-            var p_portSettings : NSString = appDelegate.getPortSettings()
+            _  = appDelegate.getPortName()
+            _ = appDelegate.getPortSettings()
             
             // AQUI ESTAN LOS DATOS A IMPRIMIR
             
@@ -411,10 +411,10 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     
     
     func didReceiveResponse_listadoVendedores(respuesta: Dictionary<String, AnyObject >) {
-        println("Respuesta del servidor : \(respuesta)")
+        print("Respuesta del servidor : \(respuesta)")
         for (k,v) in respuesta {
             if k as NSString == "error" && v as! NSString == "si" {
-                println("ERROR EN EL DICCIONARIO DEVUELTO")
+                print("ERROR EN EL DICCIONARIO DEVUELTO")
                 EXIT_FAILURE
             }
             // añado el vendedor al diccionario
@@ -422,8 +422,8 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
             let cod = v["codigo"] as! Int
             let nom = v["nombre"] as! String
             self.vendedor[String(cod)] = nom
-            println("cod: \(cod)")
-            println("nom: \(nom)")
+            print("cod: \(cod)")
+            print("nom: \(nom)")
 
             self.vendedores.append(self.vendedor)
         }
@@ -465,15 +465,15 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     func prepararImpresion() {
         webService.totalBarcas(self.PUNTO_VENTA)
         
-        println(self.totalBarcas)
+        print(self.totalBarcas)
         let totalBarcas : Int = self.totalBarcas[0] + self.totalBarcas[1] + self.totalBarcas[2] + self.totalBarcas[3]
     }
     func didReceiveResponse_totalBarcas(respuesta : [String : Int]) {
         
-        println("respuesta del servidor : Total Barcas :\(respuesta)")
+        print("respuesta del servidor : Total Barcas :\(respuesta)")
         for (k,v) in respuesta {
             if k as NSString == "error" && v as Int == 1 {
-                println("Error en el diccionario devuelto : \(v)")
+                print("Error en el diccionario devuelto : \(v)")
                 EXIT_FAILURE
             } else {
                 self.totalBarcas = Array(respuesta.values)
@@ -484,7 +484,7 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     
     func didReceiveResponse_totalEuros(respuesta : [String : Int]) {
         
-        println("respuesta del servidor : Total Euros :\(respuesta)")
+        print("respuesta del servidor : Total Euros :\(respuesta)")
         for (k,v) in respuesta {
             if k == "total" {
                 self.totalEuros = v as Int
@@ -508,12 +508,12 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
             "total"     : totalBarcas
         ]
         
-        let ticketImpreso : Bool = PrintTotal3Inch(p_portName, p_portSettings, diccParam)
+        _ = PrintTotal3Inch(p_portName, p_portSettings: p_portSettings, diccParam: diccParam)
     }
     
     
     func didReceiveResponse_cierreDia(respuesta : String) {
-        println("respuesta del servidor : \(respuesta)")
+        print("respuesta del servidor : \(respuesta)")
         
         if respuesta == "ok" {
             let alerta = UIAlertController(title: "INICIALIZANDO RESERVAS", message: "Las reservas se han restablecido todas a 0", preferredStyle: UIAlertControllerStyle.Alert)
@@ -553,7 +553,7 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
        // if tableView.tag == VENDEDOR {
-            var cell: VendedorUITableViewCell = self.vendedorUITableView.dequeueReusableCellWithIdentifier("cell") as! VendedorUITableViewCell
+            let cell: VendedorUITableViewCell = self.vendedorUITableView.dequeueReusableCellWithIdentifier("cell") as! VendedorUITableViewCell
         
         
             cell.nombreVendedorUILabelCell.textColor = UIColor.grayColor()
@@ -644,8 +644,8 @@ class VentaViewController: UIViewController, UITextFieldDelegate, UITableViewDel
     
     func ordenarVentas() {
        // println("SIN ORDENAR : \(self.ventas)")
-        self.ventas.sort({(primero : [String:String], segundo : [String:String]) -> Bool in
-            return primero["numero"]?.toInt() > segundo["numero"]?.toInt()
+        self.ventas.sortInPlace({(primero : [String:String], segundo : [String:String]) -> Bool in
+            return Int(primero["numero"]!) > Int(segundo["numero"]!)
         })
         //(println(" ORDENADO : \(self.ventas)")
     }

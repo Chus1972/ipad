@@ -15,23 +15,23 @@ class ManejoSQLITE : NSObject {
     
     class var instance: ManejoSQLITE {
         sharedInstance.sqliteDatabase = FMDatabase(path: UtilidadesBDDSQLITE.getPath("LosBarkitosSQLITE.sqlite"))
-        let documentsFolder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
-        sharedInstance.sqliteDatabasePath = documentsFolder.stringByAppendingPathComponent("LosBarkitosSQLITE.sqlite")
+        let documentsFolder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] 
+        sharedInstance.sqliteDatabasePath = (documentsFolder as NSString).stringByAppendingPathComponent("LosBarkitosSQLITE.sqlite")
 
         //let path = UtilidadesBDDSQLITE.getPath("LosBarkitosSQLITE.sqlite")
-        println("path: \(sharedInstance.sqliteDatabasePath)")
+        print("path: \(sharedInstance.sqliteDatabasePath)")
         return sharedInstance
     }
     
     func insertaViajeSQLITE(viaje : Viaje) -> Bool {
         //let consulta : String? = "INSERT INTO viaje VALUES (?, ?, ?, ?, ?, ?, ?)"
         
-        var filemgr = NSFileManager.defaultManager()
+        let filemgr = NSFileManager.defaultManager()
         if filemgr.fileExistsAtPath(sharedInstance.sqliteDatabasePath!) {
             if sharedInstance.sqliteDatabase!.open() {
                 let consulta : String? = "INSERT INTO viaje VALUES (?,?,?,?,?,?,?)"
                 if !sharedInstance.sqliteDatabase!.executeUpdate(consulta!, withArgumentsInArray: [viaje.numero, viaje.precio, viaje.fecha, viaje.punto_venta, viaje.barca, viaje.vendedor, viaje.blanco]) {
-                    println("\(sqliteDatabase!.lastError()) - \(sqliteDatabase!.lastErrorMessage())")
+                    print("\(sqliteDatabase!.lastError()) - \(sqliteDatabase!.lastErrorMessage())")
                 }
                 sharedInstance.sqliteDatabase!.close()
             }
@@ -51,7 +51,7 @@ class ManejoSQLITE : NSObject {
     
     func numeroBarcas() -> Int32 {
         var numBarcas : Int32 = 0
-        var filemgr = NSFileManager.defaultManager()
+        let filemgr = NSFileManager.defaultManager()
         if filemgr.fileExistsAtPath(sharedInstance.sqliteDatabasePath!) {
             if sharedInstance.sqliteDatabase!.open() {
                 let consulta : String? = "SELECT count(*) from viaje"

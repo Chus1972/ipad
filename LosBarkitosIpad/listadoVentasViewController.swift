@@ -45,12 +45,12 @@ class listadoVentasViewController: UIViewController, WebServiceListado, UITableV
         // println("diccionario : \(diccionario)")
         self.listadoBarcas = []
         var registro : [String : AnyObject] = [:]
-        print("diccionario : \(diccionario)")
+        print("diccionario : \(diccionario)", terminator: "")
         for (k,v) in diccionario {
             if k == "numero_viajes" {
                 self.numeroBarcas = v as! Int
             } else if (k == "error" && v as! String == "si") {
-                print("FALLO")
+                print("FALLO", terminator: "")
             } else {
                 registro["numero"] = v["numero"] as! Int
                 registro["punto_venta"] = v["punto_venta"] as! String
@@ -62,7 +62,7 @@ class listadoVentasViewController: UIViewController, WebServiceListado, UITableV
         }
         // ordenacion de las reservas por el numero
         
-        self.listadoBarcas.sort({(primero : [String:AnyObject], segundo : [String:AnyObject]) -> Bool in
+        self.listadoBarcas.sortInPlace({(primero : [String:AnyObject], segundo : [String:AnyObject]) -> Bool in
             return   segundo["hora"] as! String > primero["hora"] as! String
         })
         
@@ -79,7 +79,7 @@ class listadoVentasViewController: UIViewController, WebServiceListado, UITableV
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
-        var cell : listadoVentasTableViewCell = self.listadoVentasTableView.dequeueReusableCellWithIdentifier("CellListadoVentas") as! listadoVentasTableViewCell
+        let cell : listadoVentasTableViewCell = self.listadoVentasTableView.dequeueReusableCellWithIdentifier("CellListadoVentas") as! listadoVentasTableViewCell
         
         let numero : Int = self.listadoBarcas[indexPath.row]["numero"] as! Int
         cell.numeroUILabel.text = String(numero)
