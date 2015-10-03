@@ -491,7 +491,7 @@ func sendCommand(commandsToPrint : NSData, portName : NSString, portSettings: NS
             starPort.endCheckedBlock(&status!, 2)
         } else {
             starPort.beginCheckedBlock(&status, 2)
-            starPort.endCheckedBlock(&status!, 2)
+            starPort.endCheckedBlock(&status, 2)
         }
         
         //free((UnsafeMutablePointer<Void>),dataToSentToPrinter)

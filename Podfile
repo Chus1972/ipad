@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform:ios, '8.1'
+platform:ios, '9'
 pod 'AFNetworking', '~>2.4'
 pod 'FMDB'
 #pod 'ReachabilitySwift', '~>2.0-beta1'
